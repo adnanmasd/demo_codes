@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/code"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/WEB-INF/templates/newFixedFooterLayout.xhtml">
+
+
+	<title><ui:define name="title">#{productSearchBean.productName} - #{msg['web.xhtml.productSearchWorld.pageTitleStart']}</ui:define></title>
+	<ui:define name="headerLogo">
+		<ui:include src="/WEB-INF/templates/headerLogo.xhtml" />
+	</ui:define>
+	<ui:define name="searchBar">
+		<ui:include src="/WEB-INF/templates/searchBar.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="additional">
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@MadeinW" />
+		<meta name="twitter:title"
+			content="#{productSearchBean.productName} - #{msg['web.xhtml.productSearchWorld.pageTitleStart']}" />
+		<meta name="twitter:description"
+			content="Search for #{productSearchBean.productName} in world - MadeinW Search" />
+		<meta name="twitter:creator" content="@MadeinW" />
+		<meta name="twitter:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+
+		<meta property="og:title"
+			content="#{productSearchBean.productName} - #{msg['web.xhtml.productSearchWorld.pageTitleStart']}" />
+		<meta property="og:type" content="article" />
+		<meta property="og:url"
+			content="http://www.madeinw.com/en/products?q=#{productSearchBean.productName}" />
+		<meta property="og:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+		<meta property="og:description"
+			content="Search for #{productSearchBean.productName} in world - MadeinW Search" />
+		<meta property="og:site_name" content="MadeinW" />
+
+
+	</ui:define>
+	<f:metadata>
+		<f:viewParam name="q" value="#{productSearchBean.productName}" />
+	</f:metadata>
+	<ui:define name="content">
+		<ui:include src="/WEB-INF/templates/searchWorldFilterModal.xhtml" />
+		<h:panelGroup layout="block" styleClass="container-fluid">
+			<h:panelGroup layout="block" styleClass="page-head">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-md-12"
+						style="text-align:center">
+						<h1 class="h3" style="margin-top: 10px">
+							<p:outputLabel styleClass="color"
+								value="#{productSearchBean.productName}" />
+						</h1>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+
+		<h:panelGroup layout="block" styleClass="container-fluid"
+			style="margin-top: 1.5em;">
+			<h:form id="form">
+				<button class="btn btn-info"
+					onclick="$('#filterModal').modal('show');return false;">
+					<i class="fa fa-filter" />
+					#{msg['template.SearchCountryModal.FiltersButton']}
+				</button>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" style="margin-top:1em"
+						styleClass="col-xs-12 noResult center"
+						rendered="#{productSearchBean.productListSize == 0}">
+						<h4 class="alert alert-info">#{msg['web.xhtml.productSearchWorld.noResultFound.txtVal']}</h4>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row" id="mainDiv">
+					<p:dataScroller value="#{productSearchBean.productList}" var="item"
+						id="productResults" chunkSize="20">
+						<!-- Item #1 -->
+						<h:panelGroup layout="block" styleClass="items" id="tob">
+							<pretty:urlbuffer var="productDetails"
+								mappingId="productDetailsPage">
+								<f:param value="#{confBean.language}" />
+								<f:param value="#{item.company.country.URLFriendlyCountryName}" />
+								<f:param value="#{item.productId}" />
+								<f:param value="#{item.productUri}" />
+							</pretty:urlbuffer>
+							<h:panelGroup layout="block"
+								styleClass="col-cu-2_5 col-sm-3 col-xs-12 mfix">
+								<!-- Each item should be enclosed in "item" class -->
+								<h:panelGroup layout="block" styleClass="item">
+									<h:outputLink value="#{productDetails}">
+										<!-- Item image -->
+										<h:panelGroup layout="block" styleClass="item-image">
+											<p:graphicImage
+												value="#{images.generateImageURL(item.productId, item.productDetails.getImageByPosition(0))}"
+												width="140" styleClass="img-responsive" />
+										</h:panelGroup>
+										<!-- Item details -->
+										<h:panelGroup layout="block" styleClass="item-details">
+											<!-- Name -->
+											<!-- Use the span tag with the class "ico" and icon link (hot, sale, deal, new) -->
+											<h5 style="height: 7em">
+												<h:outputLabel dir="ltr"
+													value="#{msg['web.xhtml.productSearchWorld.productBox.MadeinLabel']} #{msg[item.company.country.countryCode]}"
+													title="#{msg[item.company.country.countryCode]}" />
+												<br />
+												<h:outputLabel
+													value="#{item.getProductBoxName(productSearchBean.searchWords)}"
+													dir="ltr" escape="false"
+													style="color: #444; overflow: hidden; text-overflow:ellipsis;"
+													title="#{item.productName}" />
+											</h5>
+											<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+											<!-- Para. Note more than 2 lines. -->
+											<h:panelGroup layout="block" styleClass="col-xs-12"
+												style="text-align:center;padding:0">
+												<h:outputText dir="ltr" style="font-size:19px;color:#444"
+													styleClass="color" value="#{item.productDetails.price}">
+													<f:convertNumber groupingUsed="true" integerOnly="true" />
+												</h:outputText>
+												<p:spacer width="5" />
+												<h:outputLabel style="color:#444"
+													value=" #{msg[item.productDetails.currency.currencyName]}" />
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="col-xs-12"
+												style="padding:0">
+												<h:outputLabel style="color:#444"
+													value="#{msg['web.xhtml.productSearchWorld.productBox.MOQLabel']} :"
+													title="#{msg['web.xhtml.productSearchWorld.productBox.MOQTitle']}"
+													styleClass="h5" />
+												<p:spacer width="5" />
+												<h:outputLabel styleClass="h5" dir="ltr" style="color:#444"
+													value="#{item.productDetails.minimumOrder} " />
+												<p:spacer width="5" />
+												<h:outputLabel style="color:#444"
+													value="#{msg[item.productDetails.unitType.unitTypeName]}"
+													title="Minimum Order Quantity" />
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+										</h:panelGroup>
+									</h:outputLink>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
+					</p:dataScroller>
+					<p:blockUI block="form"
+						trigger="filterForm:price filterForm:moq filterForm:country ">
+						<img
+							src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+					</p:blockUI>
+					<h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

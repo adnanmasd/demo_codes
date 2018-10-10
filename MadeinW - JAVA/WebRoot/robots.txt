@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin
+Allow: /en/
+Allow: /ar/
+Disallow: /ProductRegistered
+Disallow: /register

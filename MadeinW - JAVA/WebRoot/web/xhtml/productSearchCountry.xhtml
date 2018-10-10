@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/code"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/WEB-INF/templates/newFixedFooterLayout.xhtml">
+
+
+	<title><ui:define name="title">#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} - #{msg['web.xhtml.productSearchCountry.pageTitleEnd']}</ui:define></title>
+	<ui:define name="headerLogo">
+		<ui:include src="/WEB-INF/templates/headerLogo.xhtml" />
+	</ui:define>
+	<ui:define name="searchBar">
+		<ui:include src="/WEB-INF/templates/searchBar.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="additional">
+		<link href="#{request.contextPath}/resources/css/owl.carousel.css"
+			rel="stylesheet" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@MadeinW" />
+		<meta name="twitter:title"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} - #{msg['web.xhtml.productSearchCountry.pageTitleEnd']}" />
+		<meta name="twitter:description"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} #{msg['web.xhtml.productSearchCountry.metadesc2']} #{msg[productSearchBean.countrySearchingIn.countryCode]},#{productSearchBean.countrySearchingIn.countryCode}. #{msg['web.xhtml.productSearchCountry.metadesc3']}#{countryAdjective[productSearchBean.countrySearchingIn.countryCode]} #{msg['web.xhtml.productSearchCountry.metadesc4']}" />
+		<meta name="twitter:creator" content="@MadeinW" />
+		<meta name="twitter:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+
+		<meta property="og:title"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} - #{msg['web.xhtml.productSearchCountry.pageTitleEnd']}" />
+		<meta property="og:type" content="article" />
+		<meta property="og:url"
+			content="http://www.madeinw.com/#{msg['template.newLayout.html.lang']}/Made-In-#{productSearchBean.countrySearchingIn.URLFriendlyCountryName}" />
+		<meta property="og:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+		<meta property="og:description"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} #{msg['web.xhtml.productSearchCountry.metadesc2']} #{msg[productSearchBean.countrySearchingIn.countryCode]},#{productSearchBean.countrySearchingIn.countryCode}. #{msg['web.xhtml.productSearchCountry.metadesc3']} #{msg['web.xhtml.productSearchCountry.metadesc4']}" />
+		<meta property="og:site_name" content="MadeinW" />
+
+		<meta name="keywords"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]},#{msg[productSearchBean.countrySearchingIn.countryCode]} #{msg['web.xhtml.productSearchCountry.keywords.product']}, #{msg['web.xhtml.productSearchCountry.keywords.made']}" />
+		<link rel="alternate" hreflang="en"
+			href="http://www.madeinw.com/en/Made-In-#{productSearchBean.countrySearchingIn.URLFriendlyCountryName}" />
+		<link rel="alternate" hreflang="ar"
+			href="http://www.madeinw.com/ar/Made-In-#{productSearchBean.countrySearchingIn.URLFriendlyCountryName}" />
+		<link rel="canonical"
+			hreflang="#{msg['template.newLayout.html.lang']}"
+			href="http://www.madeinw.com/#{msg['template.newLayout.html.lang']}/Made-In-#{productSearchBean.countrySearchingIn.URLFriendlyCountryName}" />
+		<meta name="description"
+			content="#{msg['web.xhtml.productSearchCountry.pageTitleStart']} #{msg[productSearchBean.countrySearchingIn.countryCode]} #{msg['web.xhtml.productSearchCountry.metadesc2']} #{msg[productSearchBean.countrySearchingIn.countryCode]},#{productSearchBean.countrySearchingIn.countryCode}. #{msg['web.xhtml.productSearchCountry.metadesc3']}#{msg['web.xhtml.productSearchCountry.metadesc4']}" />
+	</ui:define>
+	<ui:define name="content">
+		<ui:include src="/WEB-INF/templates/searchCountryFilterModal.xhtml" />
+
+		<h:panelGroup layout="block" styleClass="container-fluid">
+			<h:panelGroup layout="block" styleClass="page-head">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-md-12"
+						style="text-align:center">
+						<h1 class="h3" style="margin-top: 10px">
+							<p:outputLabel styleClass="color"
+								style="font-variant:small-caps;"
+								value="#{msg['web.xhtml.productSearchCountry.Header']} #{msg[productSearchBean.countrySearchingIn.countryCode]}" />
+						</h1>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+
+		<h:panelGroup layout="block" styleClass="container-fluid">
+			<f:metadata>
+				<f:event type="preRenderView"
+					listener="#{productSearchBean.initCountry()}"></f:event>
+			</f:metadata>
+			<h:form id="form">
+				<h:panelGroup layout="block" styleClass="container"
+					rendered="#{productSearchBean.chamberListSize gt 0}">
+					<div id="owl-coc" class="owl-carousel">
+						<ui:repeat var="chamber" value="#{productSearchBean.chamberList}">
+							<div>
+								<a href="#{chamber.chamberLink}" target="_blank"><h:graphicImage
+										value="#{images.generateImageURL(productSearchBean.generatePathForImages(chamber),'0')}"
+										styleClass="img-responsive"
+										style="height:50px;width:auto;margin:0 auto;" /> </a>
+								<!-- <p class="center" style="margin: 10px 0">#{chamber.chamberName}</p> -->
+								<div class="clearfix"></div>
+							</div>
+						</ui:repeat>
+					</div>
+				</h:panelGroup>
+
+				<button class="btn btn-info"
+					onclick="$('#filterModal').modal('show');return false;">
+					<i class="fa fa-filter" />
+					#{msg['template.SearchCountryModal.FiltersButton']}
+				</button>
+
+				<h:panelGroup layout="block" styleClass="row"
+					rendered="#{productSearchBean.productList.size() == 0}">
+					<h:panelGroup layout="block" style="margin-top:1em"
+						styleClass="col-xs-12 noResult center">
+						<h4 class="alert alert-info">#{msg['web.xhtml.productSearchCountry.noResultFound.txtVal']}</h4>
+					</h:panelGroup>
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" styleClass="row">
+					<p:dataScroller value="#{productSearchBean.productList}" var="item"
+						chunkSize="20" id="productResults" styleClass=""
+						style="border:none">
+						<h:panelGroup layout="block" styleClass="items">
+							<pretty:urlbuffer var="productDetails"
+								mappingId="productDetailsPage">
+								<f:param value="#{confBean.language}" />
+								<f:param value="#{item.company.country.URLFriendlyCountryName}" />
+								<f:param value="#{item.productId}" />
+								<f:param value="#{item.productUri}" />
+							</pretty:urlbuffer>
+							<div class="col-cu-2_5 col-sm-6 col-xs-12 mfix">
+								<h:panelGroup layout="block" styleClass="item">
+									<h:outputLink value="#{productDetails}">
+										<h:panelGroup layout="block" styleClass="item-image">
+											<p:graphicImage
+												value="#{images.generateImageURL(item.productId, item.productDetails.getImageByPosition(0))}"
+												width="140" styleClass="img-responsive" />
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="item-details">
+											<h5
+												style="color: #444; overflow: hidden; text-overflow: ellipsis; height: 7em">
+												<h:outputLabel escape="false"
+													value="#{item.getProductBoxName(productSearchBean.searchWords)}"
+													dir="ltr" title="#{item.productName}" />
+											</h5>
+											<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+											<h:panelGroup layout="block" styleClass="col-xs-12"
+												style="text-align:center;padding:0">
+												<h:outputText style="font-size:19px;color:#444"
+													value="#{item.productDetails.price}" dir="ltr">
+													<f:convertNumber groupingUsed="true" integerOnly="true" />
+												</h:outputText>
+												<p:spacer width="5" />
+												<h:outputLabel style="color:#444"
+													value=" #{msg[item.productDetails.currency.currencyName]}" />
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="col-xs-12"
+												style="padding:0">
+												<h:outputLabel style="color:#444"
+													value="#{msg['web.xhtml.productSearchCountry.productBox.MOQLabel']} :"
+													title="#{msg['web.xhtml.productSearchWorld.productBox.MOQTitle']}"
+													styleClass="h5" />
+												<p:spacer width="5" />
+												<h:outputLabel styleClass="h5" style="color:#444"
+													value="#{item.productDetails.minimumOrder}" dir="ltr" />
+												<p:spacer width="5" />
+												<h:outputLabel style="color:#444"
+													value="#{msg[item.productDetails.unitType.unitTypeName]}"
+													title="Minimum Order Quantity" />
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+										</h:panelGroup>
+									</h:outputLink>
+								</h:panelGroup>
+							</div>
+						</h:panelGroup>
+					</p:dataScroller>
+					<p:blockUI block="form"
+						trigger="filterForm:price filterForm:moq filterForm:txt filterForm:industry">
+						<img
+							src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+					</p:blockUI>
+				</h:panelGroup>
+			</h:form>
+
+		</h:panelGroup>
+		<script src="#{request.contextPath}/resources/js/owl.carousel.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			var recent = $("#owl-coc");
+			recent.owlCarousel({
+					nav : false,
+					#{msg['template.newLayout.html.dir']}: true,
+					center:true,
+					loop:true,
+					autoplay:true,
+			  	autoplayTimeout:5000,
+			 	 	autoplayHoverPause:true,
+			 	 	items:1,
+					responsive:{
+						0:{
+							items:1
+						},
+						480:{
+							items:1
+						},
+						640:{
+							items:1
+						},
+						766:{
+							items:1
+						},
+						991:{
+							items:1
+						},
+						1053:{
+							items:1
+						},
+						1200:{
+							items:1
+						},
+					},
+			});
+		});
+		</script>
+	</ui:define>
+</ui:composition>

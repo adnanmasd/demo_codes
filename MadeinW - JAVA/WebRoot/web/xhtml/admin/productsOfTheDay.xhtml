@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- ADMIN_PAGES ID =  6-->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jsp/jstl/code"
+	template="/WEB-INF/templates/admin/newAdmin.xhtml">
+
+
+	<title><ui:define name="title">Admin Products Of The Day Management - MADE IN W</ui:define></title>
+	<ui:define name="additional">
+		<link
+			href="#{request.contextPath}/resources/css/productBoxesHomePage.css"
+			rel="stylesheet" />
+	</ui:define>
+
+	<ui:define name="mainContent">
+		<div class="container-fluid" style="padding: 0">
+			<h:panelGroup layout="block" styleClass="content">
+				<h:panelGroup layout="block" styleClass="mainbar col-xs-12"
+					style="padding:0" id="mainArea">
+					<!-- Page heading -->
+					<h:panelGroup layout="block" styleClass="page-head">
+						<h3 class="pull-left">
+							<i class="fa fa-home"></i> Products Of the day Management
+						</h3>
+						<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+					</h:panelGroup>
+					<!-- Page heading ends -->
+
+					<p:dialog appendTo="@(body)" closeOnEscape="false" dynamic="true"
+						modal="true" header="Add Product Of the Day" width="80%"
+						height="80%" position="center center" widgetVar="addProduct"
+						id="addModal" style="position:absolute;">
+						<p:ajax event="close" update="boxes g msg" />
+						<h:form id="searchProduct">
+							<h:panelGroup layout="block" styleClass="row"
+								style="margin: 10px 0">
+								<h:panelGroup layout="block" styleClass="col-xs-5">
+									<label>Made In Country</label>
+									<h:selectOneMenu styleClass="dropdown ui-inputfield"
+										id="country" requiredMessage="Please Select Country"
+										required="true" value="#{adminPotd.countrySearchingIn}"
+										style="width:100%;height: 35px; text-transform:none !important; cursor:default">
+										<f:selectItem itemLabel="- Select One -" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{adminPotd.listOfCountries.entrySet()}"
+											var="entry" itemLabel="#{entry.key}"
+											itemValue="#{entry.value}" />
+									</h:selectOneMenu>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="col-xs-5">
+									<label>Search By Product Name</label>
+									<p:inputText styleClass="form-control" maxlength="60"
+										value="#{adminPotd.searchKeyword}" />
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="col-xs-2">
+									<br />
+									<p:commandButton value="Search" styleClass="btn btn-info"
+										process="@form" type="submit" update="addPotd:pList g"
+										id="searchAction" actionListener="#{adminPotd.findProducts()}">
+									</p:commandButton>
+								</h:panelGroup>
+							</h:panelGroup>
+							<p:blockUI block="addPotd:pList" trigger="searchAction">...SEARCHING...</p:blockUI>
+						</h:form>
+						<h:form id="addPotd">
+							<h:panelGroup layout="block" styleClass="row"
+								style="margin: 10px 0">
+								<h:panelGroup layout="block"
+									styleClass="col-md-offset-2 col-xs-8">
+									<p:dataTable id="pList" var="product" required="true"
+										rowKey="#{product.productId}" paginator="true"
+										requiredMessage="Please select a Product from Product List to add."
+										style="width:100%" value="#{adminPotd.productResultList}"
+										selection="#{adminPotd.productToAdd}">
+										<p:ajax event="rowSelect" update="addPotd:cName" />
+										<f:facet name="header">
+								Result	       				
+							</f:facet>
+										<p:column selectionMode="single"
+											style="width:35px;text-align:center">
+										</p:column>
+										<p:column headerText="PID" width="50">#{product.productId}</p:column>
+										<p:column headerText="Name">#{product.productName}</p:column>
+										<p:column headerText="Made In">#{product.company.country.URLFriendlyCountryName}</p:column>
+									</p:dataTable>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="row"
+								style="margin: 10px 0">
+								<h:panelGroup layout="block"
+									styleClass="col-md-offset-3 col-xs-4">
+									<label>Custom Name for Product Of the Day Box</label>
+									<p:inputText styleClass="form-control" required="true"
+										requiredMessage="Custom Name Required" id="cName"
+										value="#{adminPotd.productToAddName}" maxlength="20" />
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="col-xs-2">
+									<br />
+									<p:commandButton value="+ ADD" update="boxes g msg"
+										id="addButton" type="submit" process="@form"
+										oncomplete="PF('addProduct').hide();"
+										actionListener="#{adminPotd.addProductOfTheDay()}"
+										styleClass="btn btn-success">
+									</p:commandButton>
+								</h:panelGroup>
+							</h:panelGroup>
+							<p:blockUI block="addModal" trigger="addButton">... ADDING ...</p:blockUI>
+						</h:form>
+					</p:dialog>
+
+					<!-- Matter -->
+					<h:panelGroup layout="block" styleClass="matter">
+						<h:panelGroup layout="block" styleClass="container">
+							<h:panelGroup layout="block" styleClass="row">
+								<h:panelGroup layout="block" styleClass="col-xs-12">
+									<h:panelGroup layout="block" styleClass="widget" id="toBlock">
+										<h:panelGroup layout="block" styleClass="widget-head">
+											<h:panelGroup layout="block" styleClass="pull-left">Products of the Day</h:panelGroup>
+											<h:panelGroup layout="block"
+												styleClass="widget-icons pull-right">
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="widget-content">
+											<h:panelGroup layout="block" styleClass="padd">
+												<p:growl id="g" />
+												<h:panelGroup layout="block" styleClass="row">
+													<h:panelGroup layout="block" styleClass="col-xs-5">
+														<h:form id="searchPotd">
+															<p:calendar mask="true" pattern="yyyy-MM-dd"
+																mode="inline" style="width:100%" pages="2" size="100"
+																requiredMessage="Date is Required" id="fetchPotd"
+																value="#{adminPotd.dateToSearch}" required="true">
+																<p:ajax event="dateSelect"
+																	listener="#{adminPotd.fetchProductsOftheDay()}"
+																	update="boxes g msg"></p:ajax>
+															</p:calendar>
+														</h:form>
+													</h:panelGroup>
+													<h:panelGroup layout="block" id="msg">
+														<h:panelGroup layout="block" styleClass="col-xs-7"
+															rendered="#{adminPotd.filledSlots eq 0 and adminPotd.emptySlots eq 5}">
+															<h:panelGroup layout="block"
+																styleClass="alert alert-danger" style="margin-top:20px">No Products Found on
+												#{adminPotd.dateStr}</h:panelGroup>
+														</h:panelGroup>
+														<h:panelGroup layout="block" styleClass="col-xs-7"
+															rendered="#{adminPotd.filledSlots gt 0 and adminPotd.filledSlots lt 5}">
+															<h:panelGroup layout="block" style="margin-top:20px"
+																styleClass="alert alert-warning">Some Products are found on
+												#{adminPotd.dateStr}</h:panelGroup>
+														</h:panelGroup>
+														<h:panelGroup layout="block" styleClass="col-xs-7"
+															rendered="#{adminPotd.filledSlots eq 5}">
+															<h:panelGroup layout="block" style="margin-top:20px"
+																styleClass="alert alert-success">All Products are found on
+												#{adminPotd.dateStr}</h:panelGroup>
+														</h:panelGroup>
+													</h:panelGroup>
+												</h:panelGroup>
+												<h:panelGroup layout="block" styleClass="row">
+													<h:panelGroup layout="block" styleClass="col-md-12"
+														id="boxes">
+														<h:panelGroup layout="block" styleClass="potd-items">
+															<ui:repeat var="item" size="#{adminPotd.filledSlots}"
+																value="#{adminPotd.productsOftheDayList}">
+																<h:panelGroup layout="block"
+																	styleClass="col-md-2 col-sm-4 col-xs-12 mfix">
+																	<!-- Each item should be enclosed in "item" class -->
+																	<h:panelGroup layout="block" styleClass="potd-item"
+																		style="min-height:250px">
+																		<!-- Item image -->
+																		<h:panelGroup layout="block"
+																			styleClass="potd-item-image">
+																			<h:graphicImage
+																				value="#{images.generateImageURL(item.product.productId, item.product.productDetails.getImageByPosition(0))}"
+																				width="140" style="max-width:140px"
+																				styleClass="img-responsive" />
+																		</h:panelGroup>
+																		<!-- Item details -->
+																		<h:panelGroup layout="block"
+																			styleClass="item-details center">
+																			<!-- Name -->
+																			<!-- Use the span tag with the class "ico" and icon link (hot, sale, deal, new) -->
+																			<h:panelGroup layout="block"
+																				styleClass="col-xs-12 potd-price">
+																				<h:outputText style="font-size:19px;color:#444"
+																					value="#{item.product.productDetails.price}"
+																					dir="ltr">
+																					<f:convertNumber groupingUsed="true"
+																						integerOnly="true" />
+																				</h:outputText>
+																				<p:spacer width="5" />
+																				<h:outputText style="color:#444"
+																					value=" #{msg[item.product.productDetails.currency.currencyName]}" />
+																			</h:panelGroup>
+																			<br />
+																			<h5>
+																				<h:outputLabel style="color:#444;"
+																					value="#{item.productName}" dir="ltr" />
+																				<br />
+																				<h:outputLabel
+																					value="#{msg['web.xhtml.productSearchWorld.productBox.MadeinLabel']} #{msg[item.product.company.country.countryCode]}"
+																					dir="ltr" />
+																				<span> <p:commandButton
+																						style="margin-top:6px"
+																						actionListener="#{adminPotd.deleteProductOfTheDay(item)}"
+																						update="boxes g msg"
+																						styleClass="btn btn-danger btn-xs"
+																						value="- REMOVE">
+																						<p:confirm header="Confirmation"
+																							message="Are you sure you want to delete this Product of the Day from #{adminPotd.dateStr}?"
+																							icon="ui-icon-alert" />
+																					</p:commandButton> <p:confirmDialog global="true" showEffect="fade"
+																						hideEffect="fade">
+																						<h:panelGroup layout="block"
+																							styleClass="col-xs-12 center">
+																							<p:commandButton value="Yes" type="button"
+																								styleClass="ui-confirmdialog-yes"
+																								icon="ui-icon-check" />
+																							<p:commandButton value="No" type="button"
+																								styleClass="ui-confirmdialog-no"
+																								icon="ui-icon-close" />
+																						</h:panelGroup>
+																					</p:confirmDialog>
+																				</span>
+																			</h5>
+																		</h:panelGroup>
+																	</h:panelGroup>
+																</h:panelGroup>
+															</ui:repeat>
+															<ui:repeat var="empty" value="#{adminPotd.emptyList}">
+																<h:panelGroup layout="block"
+																	styleClass="col-md-2 col-sm-4 col-xs-12 mfix">
+																	<h:panelGroup layout="block" styleClass="item center"
+																		style="min-height:250px">
+																		<p:commandButton type="button"
+																			onclick="PF('addProduct').show();" update="addModal"
+																			styleClass="btn btn-success btn-xs" value="+ ADD">
+																		</p:commandButton>
+																	</h:panelGroup>
+																</h:panelGroup>
+															</ui:repeat>
+															<h:form id="potd">
+																<h:panelGroup layout="block"
+																	rendered="#{adminPotd.filledSlots eq 0}"
+																	styleClass="col-md-2 col-sm-4 col-xs-12 mfix center">
+																	<br />
+																	<br />
+																	<label>Copy All From Date</label>
+																	<p:calendar value="#{adminPotd.dateToCopyFrom}"
+																		requiredMessage="Date to Copy From Required"
+																		mask="true" pattern="yyyy-MM-dd" required="true"
+																		id="copyFrom"></p:calendar>
+																	<br />
+																	<br />
+																	<p:commandButton value="+ Add All" update="boxes g msg"
+																		id="copyAction"
+																		actionListener="#{adminPotd.copyProductsOfTheDay()}"
+																		styleClass="btn btn-success">
+																		<p:confirm header="Confirmation"
+																			message="Are you sure you want to copy ALL Product of the Day from #{adminPotd.dateStr}?"
+																			icon="ui-icon-alert" />
+																	</p:commandButton>
+																	<p:confirmDialog global="true" showEffect="fade"
+																		hideEffect="fade">
+																		<h:panelGroup layout="block"
+																			styleClass="col-xs-12 center">
+																			<p:commandButton value="Yes" type="button"
+																				styleClass="ui-confirmdialog-yes"
+																				icon="ui-icon-check" />
+																			<p:commandButton value="No" type="button"
+																				styleClass="ui-confirmdialog-no"
+																				icon="ui-icon-close" />
+																		</h:panelGroup>
+																	</p:confirmDialog>
+																</h:panelGroup>
+																<h:panelGroup layout="block"
+																	rendered="#{adminPotd.filledSlots gt 0}"
+																	styleClass="col-md-2 col-sm-4 col-xs-12 mfix center">
+																	<br />
+																	<br />
+																	<p:commandButton value="- Remove All"
+																		update="boxes g msg" id="delAction"
+																		actionListener="#{adminPotd.deleteAll()}"
+																		styleClass="btn btn-danger">
+																		<p:confirm header="Confirmation"
+																			message="Are you sure you want to delete ALL Product of the Day from #{adminPotd.dateStr}?"
+																			icon="ui-icon-alert" />
+																	</p:commandButton>
+																	<p:confirmDialog global="true" showEffect="fade"
+																		hideEffect="fade">
+																		<h:panelGroup layout="block"
+																			styleClass="col-xs-12 center">
+																			<p:commandButton value="Yes" type="button"
+																				styleClass="ui-confirmdialog-yes"
+																				icon="ui-icon-check" />
+																			<p:commandButton value="No" type="button"
+																				styleClass="ui-confirmdialog-no"
+																				icon="ui-icon-close" />
+																		</h:panelGroup>
+																	</p:confirmDialog>
+																	<br />
+																	<br />
+																</h:panelGroup>
+															</h:form>
+															<p:blockUI block="boxes"
+																trigger="searchPotd:fetchPotd potd:copyAction potd:delAction">... WAIT ...</p:blockUI>
+														</h:panelGroup>
+													</h:panelGroup>
+												</h:panelGroup>
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+					<!-- Matter ends -->
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+	</ui:define>
+</ui:composition>

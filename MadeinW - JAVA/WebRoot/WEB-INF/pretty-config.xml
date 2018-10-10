@@ -1,0 +1,69 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+	<url-mapping id="base">
+		<pattern value="/#{ /en|ar/ lang : confBean.language}" />
+		<view-id />
+	</url-mapping>
+
+	<url-mapping id="home" parentId="base">
+		<pattern value="/" />
+		<view-id value="/web/xhtml/Home.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="adminLogin">
+		<pattern value="/admin/login" />
+		<view-id value="/web/xhtml/admin/loginAdmin.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="adminUserManagment">
+		<pattern value="/admin/user/managment" />
+		<view-id value="/web/xhtml/admin/userManagment.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="adminProductsOfTheDay">
+		<pattern value="/admin/products/productsOfTheDay" />
+		<view-id value="/web/xhtml/admin/productsOfTheDay.xhtml" />
+	</url-mapping>
+	<url-mapping id="adminDash">
+		<pattern value="/admin/dashboard" />
+		<view-id value="/web/xhtml/admin/adminDashboard.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="400" parentId="base">
+		<pattern value="/400" />
+		<view-id value="/web/xhtml/400.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="404" parentId="base">
+		<pattern value="/404" />
+		<view-id value="/web/xhtml/404.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="500" parentId="base">
+		<pattern value="/500" />
+		<view-id value="/web/xhtml/500.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="400_admin">
+		<pattern value="/admin/400" />
+		<view-id value="/web/xhtml/admin/400.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="404_admin">
+		<pattern value="/admin/404" />
+		<view-id value="/web/xhtml/admin/404.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="403_admin">
+		<pattern value="/admin/403" />
+		<view-id value="/web/xhtml/admin/403.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="500_admin">
+		<pattern value="/admin/500" />
+		<view-id value="/web/xhtml/admin/500.xhtml" />
+	</url-mapping>
+</pretty-config>

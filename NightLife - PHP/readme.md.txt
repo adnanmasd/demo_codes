@@ -1,0 +1,2 @@
+NightLife was a project where the owner of a restaurant/bar/club can register their places on the website. The ser through Web/Mobile App will search for the club in which city they want.
+A simple REST API was made by Adnan Masood to fetch and view the system data in Mobile APP.

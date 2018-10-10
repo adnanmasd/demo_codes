@@ -1,0 +1,496 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/code"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/WEB-INF/templates/newFixedFooterLayout.xhtml">
+
+
+	<title><ui:define name="title">#{msg['web.xhtml.Home.pageTitle']}</ui:define></title>
+	<ui:define name="additional">
+		<link href="#{request.contextPath}/resources/css/owl.carousel.css"
+			rel="stylesheet" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@MadeinW" />
+		<meta name="twitter:title"
+			content="#{msg['web.xhtml.Home.pageTitle']}" />
+		<meta name="twitter:description"
+			content="#{msg['web.xhtml.Home.metaDesc']}" />
+		<meta name="twitter:creator" content="@MadeinW" />
+		<meta name="twitter:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+		<meta name="keywords"
+			content="Home, MadeinW Home, Search MadeinW, MadeinW Search, MadeinW, MadeinW Inc., Made in world, miw" />
+		<meta property="og:title" content="#{msg['web.xhtml.Home.pageTitle']}" />
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="#{request.contextPath}/" />
+		<meta property="og:image"
+			content="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+		<meta property="og:description"
+			content="#{msg['web.xhtml.Home.metaDesc']}" />
+		<meta property="og:site_name" content="MadeinW" />
+		<meta name="keywords"
+			content="#{msg['web.xhtml.Home.keyword1']},#{msg['web.xhtml.Home.keyword2']},#{msg['web.xhtml.Home.keyword3']},#{msg['web.xhtml.Home.keyword4']},#{msg['web.xhtml.Home.keyword5']},#{msg['web.xhtml.Home.keyword6']},#{msg['web.xhtml.Home.keyword7']},#{msg['web.xhtml.Home.keyword8']}" />
+		<meta name="description" content="#{msg['web.xhtml.Home.metaDesc']}" />
+		<link rel="canonical"
+			hreflang="#{msg['template.newLayout.html.lang']}"
+			href="http://www.madeinw.com/#{msg['template.newLayout.html.lang']}/" />
+
+		<link rel="alternate" hreflang="en" href="http://www.madeinw.com/en/" />
+		<link rel="alternate" hreflang="ar" href=" http://www.madeinw.com/ar/" />
+
+		<link
+			href="#{request.contextPath}/resources/css/productBoxesHomePage.css"
+			rel="stylesheet" />
+
+		<script src="#{request.contextPath}/resources/js/jquery.easing.min.js"></script>
+	</ui:define>
+
+	<ui:define name="homePageLogo">
+		<h:panelGroup layout="block" styleClass="container">
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-12">
+					<h:panelGroup layout="block" styleClass="center">
+						<h:graphicImage class="img-responsive homePageLogo"
+							value="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png"
+							width="150">
+						</h:graphicImage>
+						<h2 style="font-style: italic;" class="color">#{msg['web.xhtml.Home.missionStatement']}</h2>
+						<!-- <h4 style="font-weight: 100">#{msg['web.xhtml.Home.missionStatement']}</h4> -->
+						<br />
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:define>
+	<ui:define name="searchBar">
+		<ui:include src="/WEB-INF/templates/searchBar.xhtml" />
+	</ui:define>
+	<br />
+	<ui:define name="homePageCountry">
+		<!-- <h:panelGroup layout="block" styleClass="container">
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-12">
+					<div class="strike">
+						<span>#{msg['web.xhtml.Home.or']}</span>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="col-xs-12 center">
+					<a href="#SearchByCountry" class="btn btn-info page-scroll"
+						style="font-size: 16px !important">
+						#{msg['web.xhtml.Home.countryLinksButton']} </a>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup-->
+		<br />
+		<h:panelGroup layout="block" styleClass="container-fluid">
+			<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+					<h:panelGroup layout="block" styleClass="potd-items"
+						style="margin:20px auto">
+						<h:panelGroup layout="block" styleClass="potd-item"
+							style="border:none;box-shadow:none">
+							<pretty:link mappingId="expo">
+								<h:graphicImage
+									value="#{staticContentUrl.getStaticContentUrl()}/content/images/Expo/Logo_Expo.png"
+									styleClass="img-responsive expoLogo" title="Made in World Expo" />
+							</pretty:link>
+						</h:panelGroup>
+					</h:panelGroup>
+				</div>
+				<div
+					class="col-lg-3 col-md-3 col-sm-6 col-lg-push-6 col-md-push-6 col-xs-6">
+					<h:panelGroup layout="block" styleClass="potd-items"
+						rendered="#{homePage.chamberListSize != 0}">
+						<div class="recent-news block">
+							<!-- Recent Item -->
+							<div class="recent-item">
+								<div id="owl-coc" class="owl-carousel">
+									<ui:repeat var="chamber" value="#{homePage.chamberList}">
+										<a target="_blank" href="#{chamber.chamberLink}"><h:panelGroup
+												layout="block" styleClass="potd-item"
+												style="border:none;box-shadow:none">
+												<div style="margin: 40px auto">
+													<h:panelGroup layout="block" styleClass="">
+														<h:graphicImage
+															value="#{images.generateImageURL(homePage.generatePathForImages(chamber),'1')}"
+															style="height:100px; width:auto; margin:0 auto"
+															styleClass="img-responsive" />
+													</h:panelGroup>
+													<h:panelGroup layout="block"
+														styleClass="potd-item-details center">
+														<br />
+														<label class="h5" style="color: black">#{msg['web.xhtml.Home.chamber.statement']}
+															#{msg[chamber.chamberCountryCode]}</label>
+														<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+													</h:panelGroup>
+												</div>
+											</h:panelGroup></a>
+									</ui:repeat>
+								</div>
+							</div>
+						</div>
+					</h:panelGroup>
+				</div>
+				<div
+					class="col-lg-6 col-md-6 col-sm-12 col-lg-pull-3 col-md-pull-3 col-xs-12">
+					<h:panelGroup layout="block" styleClass="potd-items"
+						rendered="#{homePage.productListSize != 0}">
+						<div class="recent-news block">
+							<!-- <h5 class="title">Featured Products Of The Day</h5> -->
+							<!-- Recent Item -->
+							<div class="recent-item">
+								<div id="owl-potd" class="owl-carousel">
+									<ui:repeat var="item" value="#{homePage.productsOfTheDay}">
+										<pretty:urlbuffer var="productDetails"
+											mappingId="productDetailsPage">
+											<f:param value="#{confBean.language}" />
+											<f:param
+												value="#{item.product.company.country.URLFriendlyCountryName}" />
+											<f:param value="#{item.product.productId}" />
+											<f:param value="#{item.product.productUri}" />
+										</pretty:urlbuffer>
+										<h:panelGroup layout="block" styleClass="potd-item">
+											<h:outputLink value="#{productDetails}"
+												title="#{item.product.productName}">
+												<h:panelGroup layout="block" styleClass="potd-item-image">
+													<h:graphicImage
+														value="#{images.generateImageURL(item.product.productId, item.product.productDetails.getImageByPosition(0))}"
+														width="140" style="max-width:140px"
+														styleClass="img-responsive" />
+												</h:panelGroup>
+												<h:panelGroup layout="block"
+													styleClass="potd-item-details center">
+													<h:panelGroup layout="block"
+														styleClass="col-xs-12 potd-price">
+														<h:outputText style="font-size:19px;color:#444"
+															value="#{item.product.productDetails.price}" dir="ltr">
+															<f:convertNumber groupingUsed="true" integerOnly="true" />
+														</h:outputText>
+														<h:outputText dir="ltr" style="color:#444"
+															value=" #{msg[item.product.productDetails.currency.currencyName]}" />
+													</h:panelGroup>
+													<h5>
+														<h:outputLabel style="color:#444;"
+															value="#{item.productName}" dir="ltr" />
+														<br />
+														<h:outputLabel
+															value="#{msg['web.xhtml.productSearchWorld.productBox.MadeinLabel']} #{msg[item.product.company.country.countryCode]}"
+															dir="ltr" />
+													</h5>
+													<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+												</h:panelGroup>
+											</h:outputLink>
+										</h:panelGroup>
+									</ui:repeat>
+								</div>
+							</div>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+		</h:panelGroup>
+	</ui:define>
+
+
+	<ui:define name="content">
+		<!-- <section id="SearchByCountry" class="country-section"> <h:panelGroup
+			layout="block" styleClass="container-fluid">
+			<h:panelGroup layout="block" styleClass="page-head">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-12"
+						style="text-align:center">
+
+						<a href="#" id="smallLogo"> <h:graphicImage
+								class="img-responsive"
+								style="min-width:60px ;margin:4px auto 6px auto;"
+								value="/resources/images/#{msg['website.logo']}" width="60"
+								title="#{msg['template.newHeader.header.websiteTitle']}">
+							</h:graphicImage></a>
+
+
+						<h1 class="h3 color" style="font-variant: small-caps">#{msg['web.xhtml.Home.countryLinksButton']}</h1>
+						<h:panelGroup layout="block"
+							styleClass="col-xs-12 col-sm-offset-3 col-sm-6  center">
+							<p:inputText type="text" styleClass="form-control"
+								placeholder="#{msg['web.xhtml.Home.filterCountry']}" id="filter" />
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			<br />
+			<br />
+			<h:panelGroup layout="block" styleClass="container-fluid">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="americas">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['Americas']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/americas.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['Americas']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<ui:repeat var="country"
+								value="#{continentBean.americas.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="africa">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['Africa']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/africa.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['Africa']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<ui:repeat var="country"
+								value="#{continentBean.africa.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="asia">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['Asia']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/asia.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['Asia']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<ui:repeat var="country" value="#{continentBean.asia.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="europe">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['Europe']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/europe.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['Europe']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<ui:repeat var="country"
+								value="#{continentBean.europe.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="middleEast">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['MiddleEast']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/mideast.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['MiddleEast']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<ui:repeat var="country"
+								value="#{continentBean.middleEast.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-md-2 continents"
+						id="oceania">
+						<h:panelGroup layout="block" styleClass=""
+							pt:data-name="#{msg['Oceania']}">
+							<h:graphicImage styleClass="img-responsive"
+								style="display:inline !important"
+								value="#{staticContentUrl.getStaticContentUrl()}/content/images/oceanic.png"
+								width="80" />
+							<h:panelGroup layout="block" styleClass="h3"
+								style="font-variant:small-caps">#{msg['Oceania']}</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="country">
+							<span id="noResult" style="display: none; color: darkgery">No
+								match found</span>
+							<ui:repeat var="country"
+								value="#{continentBean.oceania.countries}">
+								<h:panelGroup layout="block" styleClass="countryLink"
+									pt:dir="#{msg['template.newLayout.html.dir']}">
+									<h2 style="font-size: 12px; line-height: 18px;">
+										<pretty:link mappingId="countryPage">
+											<f:param value="#{confBean.language}" />
+											<f:param value="#{country.URLFriendlyCountryName}" />
+										#{msg[country.countryCode]}
+									</pretty:link>
+									</h2>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			<script type="text/javascript">
+		$(document).ready(function(){
+		    $("#filter").keyup(function(){
+		    	var keyword = $(this).val().toLowerCase();
+		    	$(".continents").each(function(){
+		        $(".countryLink a").each(function() {
+		            var countryName = $(this).text().toLowerCase();
+		            if ($.trim(countryName).slice(0,keyword.length) === keyword){
+		            	$(this).closest('.countryLink').show();
+			          } else if ($.trim(countryName).slice(0,keyword.length) !== keyword){
+			        	  $(this).closest('.countryLink').hide();
+				        }
+		        });
+		    	});
+			  });
+		});
+		</script>
+		</h:panelGroup></section> -->
+		<!-- <script type="text/javascript">
+		$(function() {
+			$('#main').css({'height' : '100vh'})
+		    $('a.page-scroll').bind('click', function(event) {
+		        var $anchor = $(this);
+		        $('html, body').stop().animate({
+		            scrollTop: $($anchor.attr('href')).offset().top
+		        }, 1500, 'easeInOutExpo');
+		        event.preventDefault();
+		    });
+		});
+		</script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+				$("#SearchByCountry").css("padding-top","20px");
+				$('#smallLogo').click(function(e) {
+					e.preventDefault();
+					$('body,html').animate({
+						scrollTop : 0
+					}, 1500, 'easeInOutExpo');
+				});
+			});
+		</script> -->
+		<script src="#{request.contextPath}/resources/js/owl.carousel.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			var recent = $("#owl-potd");
+			recent.owlCarousel({
+		    	#{msg['template.newLayout.html.dir']}: true,
+		    	autoplay:true,
+			    autoplayTimeout:3000,
+			    autoplayHoverPause:true,
+				responsive:{
+					0:{
+						loop:true,
+						items:1
+					},
+					480:{
+						loop:true,
+						items:2
+					},
+					640:{
+						items:3
+					},
+					766:{
+						items:3
+					},
+					1024:{
+						loop:true,
+						items:2
+					},
+					1053:{
+						loop:true,
+						items:2
+					},
+					1200:{
+						items:3
+					},
+				},
+			});
+		});
+		</script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			var r = $("#owl-coc");
+			r.owlCarousel({
+				nav: false,
+				loop: #{homePage.chamberListSize gt 1},
+		    	#{msg['template.newLayout.html.dir']}: true,
+				responsive:{
+					0:{
+						items:1
+					},
+				},
+				autoplay:true,
+			    autoplayTimeout:5000,
+			    autoplayHoverPause:true
+			});
+		});
+		</script>
+	</ui:define>
+</ui:composition>

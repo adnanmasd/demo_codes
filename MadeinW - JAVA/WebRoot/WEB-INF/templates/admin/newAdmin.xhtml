@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="utf-8" />
+	<!-- Title and other stuffs -->
+	<title><ui:insert name="title"></ui:insert></title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+
+
+	<!-- jQuery UI -->
+	<!-- Data tables -->
+	<link href="#{request.contextPath}/resources/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/resources/css/jquery.dataTables.css" />
+	<!-- Main stylesheet -->
+	<link href="#{request.contextPath}/resources/css/styleAdmin.css"
+		rel="stylesheet" />
+	<!-- Widgets stylesheet -->
+	<link href="#{request.contextPath}/resources/css/widgets.css"
+		rel="stylesheet" />
+	<link href="#{aRsrc['template.newLayout.head.rtlBootstrap']}"
+		rel="stylesheet" />
+
+	<link rel="icon" type="image/gif"
+		href="#{staticContentUrl.getStaticContentUrl()}/content/images/Logo_EN.png" />
+	<!-- <script src="js/respond.min.js"></script> -->
+	<!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <![endif]-->
+	<ui:insert name="additional"></ui:insert>
+</h:head>
+
+<h:body>
+	<!-- Header starts -->
+	<header> <!-- Navigation starts --> <!-- Header ends --> <!-- Main content starts -->
+	<nav class="navbar navbar-default" style="margin-bottom:35px">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+				aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/admin/dashboard"> <img
+				src="#{requset.contextPath}/resources/images/Logo_EN.png"
+				height="80" width="80" />
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<c:forEach items="#{adminUserNavbar.pageMap}" var="entry">
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#"><span
+							style="text-transform: capitalize">#{entry.key}</span> <p:spacer
+								width="5" /><span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<ui:repeat var="page" value="#{entry.value}">
+								<li><a href="#{page.pagePattern}">#{page.pageName}</a></li>
+							</ui:repeat>
+						</ul></li>
+				</c:forEach>
+				<ui:repeat var="page" value="#{adminUserNavbar.pagesList}">
+					<li><a href="#{page.pagePattern}">#{page.pageName}</a></li>
+				</ui:repeat>
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#">Hi, #{adminUserBean.userEmail}<span
+						class="caret"></span>
+				</a>
+					<ul class="dropdown-menu">
+						<pretty:urlbuffer var="userDash" mappingId="adminDash" />
+						<li><a href="#{userDash}">My Dashboard</a></li>
+						<li><p:commandLink action="#{adminUserOperationBean.Logout}"
+								value="Logout" /></li>
+					</ul></li>
+			</ul>
+			<script type="text/javascript">
+				var url = window.location;
+				$('ul.nav a[href="'+ url.pathname +'"]').parent().addClass('active');
+			</script>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid --> </nav></header>
+	<ui:insert name="mainContent"></ui:insert>
+	<!-- Content ends -->
+	<!-- Footer starts -->
+	<footer> <h:panelGroup layout="block" styleClass="container">
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-md-12">
+				<!-- Copyright info -->
+				<p class="copy">
+					Copyright &copy; 2016 | <a href="#">MADE IN W</a>
+				</p>
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:panelGroup> </footer>
+	<!-- Footer ends -->
+	<!-- Scroll to top -->
+	<span class="totop"><a href="#"><i
+			class="glyphicon  glyphicon-arrow-up"></i></a></span>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<!-- JS -->
+	<script src="#{request.contextPath}/resources/js/jquery-ui.min.js"></script>
+	<!-- jQuery UI -->
+	<script
+		src="#{request.contextPath}/resources/js/jquery.dataTables.min.js"></script>
+	<!-- Data tables -->
+	<script src="#{request.contextPath}/resources/js/customAdmin.js"></script>
+	<script src="#{request.contextPath}/resources/js/bootstrap-growl.js"></script>
+	<!-- Custom codes -->
+</h:body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- ADMIN_PAGES ID = 2 -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	template="/WEB-INF/templates/admin/newAdmin.xhtml">
+
+
+	<title><ui:define name="title">Admin's Dashboard - MADE IN W</ui:define></title>
+
+	<ui:define name="mainContent">
+		<p:growl id="growl" />
+		<div class="container-fluid" style="padding: 0">
+			<h:panelGroup layout="block" styleClass="content">
+				<h:panelGroup layout="block" styleClass="mainbar col-xs-12"
+					style="padding:0" id="mainArea">
+					<h:panelGroup layout="block" styleClass="page-head">
+						<h3 class="pull-left">
+							<i class="fa fa-home breadcrumb-icon"></i><i
+								class="fa fa-chevron-right breadcrumb-icon"></i>
+							#{adminUserBean.userEmail}'s Dashboard
+						</h3>
+						<div class="pull-right">
+							<p:commandButton id="updateDash" styleClass="btn btn-success"
+								update="dashboard:board" icon="fa fa-refresh" value="Update All"
+								actionListener="#{adminDashboard.init()}" ajax="true"
+								oncomplete="refresh()"
+								rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}">
+							</p:commandButton>
+							<p:blockUI trigger="updateDash" block="dashboard">
+								<img
+									src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+							</p:blockUI>
+						</div>
+						<h:panelGroup layout="block" styleClass="clearfix"></h:panelGroup>
+					</h:panelGroup>
+					<!-- Page heading ends -->
+					<h:form id="dashboard" styleClass="matter container">
+						<div class="row">
+							<p:dashboard id="board" model="#{adminDashboard.model}"
+								disabled="true">
+
+								<p:panel
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									id="topFiveActivationCountries"
+									header="Top 5 Countries with most Activated Products">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel1" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.populateTopFiveActivationCountries()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel1"
+											block="dashboard:topFiveActivationCountries">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="4">Madein</p:column>
+												<p:column colspan="1">
+													<abbr title="No. of Activated Products">Active
+														Products</abbr>
+												</p:column>
+											</p:row>
+										</f:facet>
+										<ui:repeat var="entry"
+											value="#{adminDashboard.countryActivationStatus}">
+											<p:row>
+												<p:column colspan="4">#{entry.countryName.replaceAll('-',' ')}</p:column>
+												<p:column colspan="1">#{entry.activeProducts}</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									id="lastTenRegisteredProducts"
+									header="Last 10 Registered Products">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel2" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.lastTenRegisteredProducts}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel2"
+											block="dashboard:lastTenRegisteredProducts">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="1">ID</p:column>
+												<p:column colspan="1">Name</p:column>
+												<p:column colspan="1">Madein</p:column>
+												<p:column colspan="1">Date</p:column>
+											</p:row>
+										</f:facet>
+										<ui:repeat var="entry"
+											value="#{adminDashboard.lastTenRegisteredProducts}">
+											<p:row>
+												<p:column>#{entry.productId}</p:column>
+												<p:column>#{entry.getProductName("en")}</p:column>
+												<p:column>#{entry.company.country.URLFriendlyCountryName.replaceAll('-',' ')}</p:column>
+												<p:column>#{entry.registrationDate.toLocaleString()}</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									id="topFiveRegistrationCountries"
+									header="Top 5 Countries with most Registered Products">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel3" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.populateTopFiveRegistrationCountries()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel3"
+											block="dashboard:topFiveRegistrationCountries">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="4">Made in</p:column>
+												<p:column>
+													<abbr title="Active">A</abbr>
+												</p:column>
+												<p:column>
+													<abbr title="InActive">I</abbr>
+												</p:column>
+												<p:column>
+													<abbr title="Rejected">R</abbr>
+												</p:column>
+												<p:column styleClass="bold">Total</p:column>
+											</p:row>
+										</f:facet>
+
+										<ui:repeat var="entry"
+											value="#{adminDashboard.countryRegistrationStatus}">
+											<p:row>
+												<p:column colspan="4">#{entry.countryName.replaceAll('-',' ')}</p:column>
+												<p:column>#{entry.activeProducts}</p:column>
+												<p:column>#{entry.inActiveProducts}</p:column>
+												<p:column>#{entry.rejectedProducts}</p:column>
+												<p:column styleClass="bold">
+													<span>#{entry.totalProducts}</span>
+												</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel id="topTenMostViews"
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									header="Top 10 Products with most views">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel4" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.populateTopTenMostViews()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel4"
+											block="dashboard:topTenMostViews">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="1">ID</p:column>
+												<p:column colspan="1">Name</p:column>
+												<p:column colspan="1">Madein</p:column>
+												<p:column colspan="1">Views</p:column>
+											</p:row>
+										</f:facet>
+										<ui:repeat var="entry"
+											value="#{adminDashboard.productsWithMostViews}">
+											<p:row>
+												<p:column>#{entry.productId}</p:column>
+												<p:column>#{entry.getProductName("en")}</p:column>
+												<p:column>#{entry.company.country.URLFriendlyCountryName.replaceAll('-',' ')}</p:column>
+												<p:column>#{entry.totalViews}</p:column>
+											</p:row>
+										</ui:repeat>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel id="captchaControl" header="Current Captcha Status"
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}">
+									<h:form id="captchaChange">
+										<p:panelGrid style="width:100%">
+											<p:row>
+												<p:column>Current Status of Captcha on
+														Product Registration Page :
+													</p:column>
+												<p:column styleClass="center">
+													<p:inputSwitch id="switch"
+														value="#{adminDashboard.captchaRendered}">
+														<p:ajax listener="#{adminDashboard.toggleCaptchaStatus()}"
+															update="growl" />
+													</p:inputSwitch>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+										<p:blockUI block="dashboard:captchaControl" trigger="switch">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</h:form>
+								</p:panel>
+
+								<p:panel id="currentProductsStatus"
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									header="Current Products Status">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel5" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.populateCurrentProductsStatus()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel5"
+											block="dashboard:currentProductsStatus">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<c:forEach items="#{adminDashboard.productsStatus}"
+											var="entry">
+											<p:row>
+												<p:column>#{entry.key}</p:column>
+												<p:column>#{entry.value}</p:column>
+											</p:row>
+										</c:forEach>
+										<f:facet name="footer">
+											<p:row>
+												<p:column styleClass="bold">Total Registered Products</p:column>
+												<p:column styleClass="bold">#{adminDashboard.totalRegisteredProducts}</p:column>
+											</p:row>
+										</f:facet>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel id="users" header="Current Users Status"
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel6" update="dashboard:board"
+											styleClass="pull-right btn-success" icon="fa fa-refresh"
+											oncomplete="refresh()"
+											actionListener="#{adminDashboard.populateCurrentUserStatus()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel6" block="dashboard:users">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<c:forEach items="#{adminDashboard.usersStatus}" var="entry">
+											<p:row>
+												<p:column>#{entry.key}</p:column>
+												<p:column>#{entry.value}</p:column>
+											</p:row>
+										</c:forEach>
+										<f:facet name="footer">
+											<p:row>
+												<p:column styleClass="bold">Total Registered Users</p:column>
+												<p:column styleClass="bold">
+													<span>#{adminDashboard.totalRegisteredUsers}</span>
+												</p:column>
+											</p:row>
+										</f:facet>
+									</p:panelGrid>
+								</p:panel>
+
+								<p:panel id="topTenMostLeads"
+									rendered="#{adminUserBean.role.roleId eq 1 or adminUserBean.role.roleId eq 2}"
+									header="Top 10 Products with most leads">
+									<f:facet name="actions">
+										<p:commandButton id="refreshPanel7" update="dashboard:board"
+											oncomplete="refresh()" styleClass="pull-right btn-success"
+											icon="fa fa-refresh"
+											actionListener="#{adminDashboard.populateTopTenMostLeads()}"
+											ajax="true" />
+										<p:blockUI trigger="refreshPanel7"
+											block="dashboard:topTenMostLeads">
+											<img
+												src="#{staticContentUrl.getStaticContentUrl()}/content/images/ajax-loader.gif" />
+										</p:blockUI>
+									</f:facet>
+									<p:panelGrid style="width:100%">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="1">ID</p:column>
+												<p:column colspan="1">Name</p:column>
+												<p:column colspan="1">Madein</p:column>
+												<p:column colspan="1">Leads</p:column>
+											</p:row>
+										</f:facet>
+										<ui:repeat var="entry"
+											value="#{adminDashboard.productsWithMostLeads}">
+											<p:row>
+												<p:column>#{entry.product.productId}</p:column>
+												<p:column>#{entry.product.getProductName("en")}</p:column>
+												<p:column>#{entry.product.company.country.URLFriendlyCountryName.replaceAll('-',' ')}</p:column>
+												<p:column>#{entry.currentNoOfLeads}</p:column>
+											</p:row>
+										</ui:repeat>
+
+									</p:panelGrid>
+								</p:panel>
+								<div style="clear: both" />
+							</p:dashboard>
+						</div>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+		<script type="text/javascript">
+		function refresh(){
+			$(".ui-dashboard-column").addClass("col-md-4 col-xs-12 col-sm-12");
+			$(".ui-panel").css({
+				"margin" : "1em",
+			});
+			$(".ui-panel-titlebar").css({
+				"cursor" : "default"
+			});
+			}
+		$(document).ready(function(){
+			refresh();
+		});
+		</script>
+	</ui:define>
+</ui:composition>
